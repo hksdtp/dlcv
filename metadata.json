@@ -1,0 +1,5 @@
+{
+  "name": "Trình quản lý công việc",
+  "description": "Một ứng dụng web đơn giản và trực quan để quản lý các công việc cá nhân. Giúp bạn theo dõi tiến độ và trình bày công việc của mình một cách chuyên nghiệp.",
+  "requestFramePermissions": []
+}
