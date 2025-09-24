@@ -3,51 +3,42 @@ import { Task, TaskStatus } from '../types';
 
 interface TaskCardProps {
   task: Task;
+  isSelected: boolean;
   onSelect: (task: Task) => void;
 }
 
 const statusConfig = {
     [TaskStatus.ToDo]: {
-        label: 'Cần làm',
-        badgeClasses: 'bg-red-100 text-red-800',
+        dotClasses: 'bg-red-500',
     },
     [TaskStatus.InProgress]: {
-        label: 'Đang làm',
-        badgeClasses: 'bg-yellow-100 text-yellow-800',
+        dotClasses: 'bg-yellow-500',
     },
     [TaskStatus.Done]: {
-        label: 'Hoàn thành',
-        badgeClasses: 'bg-green-100 text-green-800',
+        dotClasses: 'bg-green-500',
     }
 };
 
-const TaskCard: React.FC<TaskCardProps> = ({ task, onSelect }) => {
+const TaskCard: React.FC<TaskCardProps> = ({ task, isSelected, onSelect }) => {
     const completedSubtasks = task.subtasks.filter(st => st.completed).length;
     const totalSubtasks = task.subtasks.length;
-    const progress = totalSubtasks > 0 ? Math.round((completedSubtasks / totalSubtasks) * 100) : 0;
     
     return (
-        <article onClick={() => onSelect(task)} className="flex items-start gap-4 p-4 border-b border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors duration-200">
+        <article 
+            onClick={() => onSelect(task)} 
+            className={`flex items-start gap-4 p-4 border-b border-slate-200/80 cursor-pointer transition-colors duration-200 ${isSelected ? 'bg-indigo-100/60' : 'hover:bg-slate-100/50'}`}
+        >
+            <div className={`mt-1.5 w-2.5 h-2.5 rounded-full flex-shrink-0 ${statusConfig[task.status].dotClasses}`}></div>
             <div className="flex-grow overflow-hidden">
-                 <div className="flex justify-between items-center mb-1">
-                    <span className={`text-xs font-semibold mr-3 px-2.5 py-0.5 rounded-full ${statusConfig[task.status].badgeClasses}`}>
-                        {statusConfig[task.status].label}
-                    </span>
+                <div className="flex justify-between items-baseline">
+                    <h3 className="font-semibold text-slate-800 text-md truncate pr-4">{task.title}</h3>
                     <span className="text-xs text-slate-500 flex-shrink-0">{new Date(task.createdAt).toLocaleDateString('vi-VN')}</span>
                 </div>
-
-                <h3 className="font-bold text-slate-800 text-md truncate">{task.title}</h3>
                 <p className="text-slate-600 text-sm truncate mt-1">{task.description || 'Không có mô tả'}</p>
                 
                 {totalSubtasks > 0 && (
-                    <div className="mt-3">
-                        <div className="flex justify-between items-center mb-1">
-                            <span className="text-xs font-medium text-slate-500">{completedSubtasks}/{totalSubtasks} công việc con</span>
-                            <span className="text-xs font-medium text-slate-500">{progress}%</span>
-                        </div>
-                        <div className="w-full bg-slate-200 rounded-full h-1.5">
-                            <div className="bg-indigo-600 h-1.5 rounded-full" style={{ width: `${progress}%` }}></div>
-                        </div>
+                    <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
+                        <span>{`✓ ${completedSubtasks}/${totalSubtasks}`}</span>
                     </div>
                 )}
             </div>

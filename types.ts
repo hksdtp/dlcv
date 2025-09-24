@@ -25,3 +25,8 @@ export interface User {
   name: string;
   avatar: string;
 }
+
+export interface SelectOption {
+  value: string;
+  label: string;
+}
