@@ -18,12 +18,13 @@ export interface Task {
   status: TaskStatus;
   subtasks: Subtask[];
   createdAt: string; // ISO string
+  department?: string;
 }
 
 export interface User {
   id: string;
   name: string;
-  avatar: string;
+  role: 'admin' | 'manager' | 'marketing_lead' | 'member';
 }
 
 export interface SelectOption {

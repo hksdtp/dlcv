@@ -19,6 +19,11 @@ const statusConfig = {
     }
 };
 
+const departmentColors: { [key: string]: string } = {
+    'Marketing': 'bg-sky-100 text-sky-800',
+    'Development': 'bg-amber-100 text-amber-800',
+};
+
 const TaskCard: React.FC<TaskCardProps> = ({ task, isSelected, onSelect }) => {
     const completedSubtasks = task.subtasks.filter(st => st.completed).length;
     const totalSubtasks = task.subtasks.length;
@@ -36,11 +41,16 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, isSelected, onSelect }) => {
                 </div>
                 <p className="text-slate-600 text-sm truncate mt-1">{task.description || 'Không có mô tả'}</p>
                 
-                {totalSubtasks > 0 && (
-                    <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
+                <div className="mt-2 flex items-center gap-3 text-xs text-slate-500">
+                    {totalSubtasks > 0 && (
                         <span>{`✓ ${completedSubtasks}/${totalSubtasks}`}</span>
-                    </div>
-                )}
+                    )}
+                    {task.department && (
+                        <span className={`px-2 py-0.5 rounded-full font-medium ${departmentColors[task.department] || 'bg-slate-100 text-slate-800'}`}>
+                            {task.department}
+                        </span>
+                    )}
+                </div>
             </div>
         </article>
     );

@@ -16,18 +16,27 @@ const statusOptions: SelectOption[] = [
   { value: TaskStatus.Done, label: 'Hoàn thành' },
 ];
 
+const departmentOptions: SelectOption[] = [
+    { value: 'Marketing', label: 'Marketing' },
+    { value: 'Development', label: 'Development' },
+    { value: 'General', label: 'General' },
+];
+
+
 const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAddTask }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState<TaskStatus>(TaskStatus.ToDo);
+  const [department, setDepartment] = useState('General');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) return;
-    onAddTask({ title, description, status });
+    onAddTask({ title, description, status, department });
     setTitle('');
     setDescription('');
     setStatus(TaskStatus.ToDo);
+    setDepartment('General');
     onClose();
   };
 
@@ -66,13 +75,23 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAddTask 
               placeholder="Thêm mô tả chi tiết cho công việc..."
             />
           </div>
-           <div className="mb-8">
-            <label htmlFor="status" className="block text-sm font-semibold text-slate-700 mb-2">Trạng thái</label>
-            <CustomSelect
-                options={statusOptions}
-                value={status}
-                onChange={(newValue) => setStatus(newValue as TaskStatus)}
-            />
+           <div className="grid grid-cols-2 gap-4 mb-8">
+             <div>
+                <label htmlFor="status" className="block text-sm font-semibold text-slate-700 mb-2">Trạng thái</label>
+                <CustomSelect
+                    options={statusOptions}
+                    value={status}
+                    onChange={(newValue) => setStatus(newValue as TaskStatus)}
+                />
+             </div>
+             <div>
+                <label htmlFor="department" className="block text-sm font-semibold text-slate-700 mb-2">Bộ phận</label>
+                <CustomSelect
+                    options={departmentOptions}
+                    value={department}
+                    onChange={(newValue) => setDepartment(newValue)}
+                />
+             </div>
           </div>
           <div className="flex justify-end gap-3">
             <button type="button" onClick={onClose} className="px-5 py-2.5 bg-slate-200/80 text-slate-800 rounded-lg hover:bg-slate-300/90 font-semibold transition-colors">
